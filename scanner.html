@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="js/html5-qrcode.min.js"></script>
+<style>
+  .result{
+    background-color: green;
+    color:#fff;
+    padding:20px;
+  }
+  .row{
+    display:flex;
+    width: 100vw;
+  }
+  #reader{
+      width: 500px;
+  }
+</style>
+<body>
+    
+    <h1>Scanner</h1>
+    <div class="row">
+        <!-- <div class="col"> -->
+          <div  id="reader"></div>
+        <!-- </div> -->
+      </div>
+
+
+</body>
+<script>
+    let c=0;
+    function onScanSuccess(qrCodeMessage) {
+    // document.getElementById('result').innerHTML = '<span class="result">'+qrCodeMessage+'</span>';
+    if(qrCodeMessage=="100"){ 
+    c=c+100;
+    let url="https://api.thingspeak.com/update?api_key=J7A55LFV22DF1S20&field1="+c;
+    fetch(url).then(done=>{
+        console.log("Done Updation")
+        // console.log(c)
+        update()
+    })
+}else{
+        console.log("Wrong QR")
+    }
+    
+}
+function onScanError(errorMessage) {
+  //handle scan error
+}
+var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 250 });
+html5QrcodeScanner.render(onScanSuccess, onScanError);
+</script>
+<script src="main.js"></script>
+</html>
